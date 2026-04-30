@@ -13,7 +13,7 @@ llm = ChatOllama(model="gemma3:1b", temperature=0.1)
 
 app = FastAPI(title="Mental Health Analysis API")
 
-multi_inferencer = MultiTaskInference(model_path="C:\\Coding\\cognify\\models\\bert_cnn_multitask2.pth")
+multi_inferencer = MultiTaskInference(model_path="bert_cnn_best_mh.pt")
 
 from fastapi.middleware.cors import CORSMiddleware
 

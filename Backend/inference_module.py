@@ -9,7 +9,7 @@ class Config:
 
 cfg = Config()
 
-def load_model(checkpoint_path="C:\\Coding\\cognify\\models\\bert_cnn_best_mh.pt"):
+def load_model(checkpoint_path="bert_cnn_best_mh.pt"):
     model = BertCNNClassifier(
         model_name=cfg.model_name,
         mh_classes=len(cfg.mh_label_map)
