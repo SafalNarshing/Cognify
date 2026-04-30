@@ -1,0 +1,101 @@
+# ============================================================
+# Cognify Backend — Python Requirements
+# Compatible with Python 3.9+
+# Install with: pip install -r requirements.txt
+# ============================================================
+
+# ----------------------------
+# Web Framework & Server
+# ----------------------------
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+python-multipart==0.0.9
+httpx==0.27.0
+
+# ----------------------------
+# Database & ORM
+# ----------------------------
+sqlalchemy==2.0.30
+alembic==1.13.1
+aiosqlite==0.20.0           # async SQLite driver (dev/local)
+asyncpg==0.29.0             # async PostgreSQL driver (production)
+
+# ----------------------------
+# Authentication & Security
+# ----------------------------
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-dotenv==1.0.1
+
+# ----------------------------
+# NLP & Transformers (BERT-CNN)
+# ----------------------------
+torch==2.3.0
+torchvision==0.18.0
+transformers==4.41.0
+tokenizers==0.19.1
+datasets==2.19.1
+accelerate==0.30.0
+
+# ----------------------------
+# Sentiment & NLP Utilities
+# ----------------------------
+nltk==3.8.1
+spacy==3.7.4
+vaderSentiment==3.3.2
+textblob==0.18.0
+langdetect==1.0.9
+
+# ----------------------------
+# Scientific Computing & ML
+# ----------------------------
+numpy==1.26.4
+pandas==2.2.2
+scikit-learn==1.4.2
+scipy==1.13.0
+
+# ----------------------------
+# Model Evaluation & Metrics
+# ----------------------------
+evaluate==0.4.2
+seqeval==1.2.2
+
+# ----------------------------
+# Data Processing & Validation
+# ----------------------------
+pydantic==2.7.1
+pydantic-settings==2.2.1
+email-validator==2.1.1
+
+# ----------------------------
+# Async Utilities
+# ----------------------------
+anyio==4.3.0
+starlette==0.37.2
+
+# ----------------------------
+# Logging & Monitoring
+# ----------------------------
+loguru==0.7.2
+rich==13.7.1
+
+# ----------------------------
+# Testing
+# ----------------------------
+pytest==8.2.0
+pytest-asyncio==0.23.6
+httpx==0.27.0               # also used for async test client
+
+# ----------------------------
+# Explainability (XAI)
+# ----------------------------
+shap==0.45.1
+lime==0.2.0.1
+
+# ----------------------------
+# Miscellaneous Utilities
+# ----------------------------
+tqdm==4.66.4
+joblib==1.4.2
+Pillow==10.3.0
+python-dateutil==2.9.0
