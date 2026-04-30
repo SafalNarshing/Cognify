@@ -119,11 +119,17 @@ Task Result Analysis            Sentiment Analysis
 
 | Layer | Technology |
 |---|---|
-| **Frontend** | Next.js (TypeScript), React, CSS Modules |
-| **Backend** | Python, FastAPI |
+| **Frontend** | Next.js 16+ (TypeScript), React 19, TailwindCSS 4, Shadcn/UI, Chart.js, Framer Motion |
+| **Frontend Auth** | NextAuth.js 4, Supabase |
+| **Backend Framework** | Python 3.9+, FastAPI, Uvicorn |
+| **LLM Integration** | LangChain + Ollama (for local LLM inference) |
 | **NLP Model** | BERT + CNN hybrid architecture (PyTorch / HuggingFace Transformers) |
-| **ML Training** | Scikit-learn, PyTorch |
-| **Data** | Reddit Mental Health Dataset, GoEmotions, Cognitive Distortion Dataset |
+| **ML Libraries** | Scikit-learn, PyTorch, Transformers, NLTK, Spacy, VADER |
+| **Database** | SQLite (dev), PostgreSQL (production) - SQLAlchemy ORM |
+| **Explainability** | SHAP, LIME |
+| **Data Processing** | Pandas, NumPy, SciPy |
+| **Testing** | Pytest, Pytest-asyncio |
+| **Data Sources** | Reddit Mental Health Dataset, GoEmotions, Cognitive Distortion Dataset |
 
 ---
 
@@ -153,42 +159,89 @@ pip --version
 
 ## Project Structure 
 
-<!-- ```
+```
 Cognify/
-├── cognify/                    # Next.js frontend application
-│   ├── app/                    # App router pages
-│   ├── components/             # Reusable React components
-│   │   ├── assessments/        # PHQ-9, GAD-7, ASRS forms
-│   │   ├── games/              # Flanker, Stroop, N-back task UIs
-│   │   ├── journal/            # Journaling interface
-│   │   └── dashboard/          # Progress tracking UI
-│   ├── public/                 # Static assets
-│   ├── styles/                 # Global CSS
-│   ├── package.json
-│   └── tsconfig.json
-│
-├── Backend/                    # Python FastAPI backend
-│   ├── main.py                 # FastAPI application entry point
-│   ├── models/                 # Pydantic data models
-│   ├── routers/                # API route handlers
-│   │   ├── assessment.py       # Screening endpoints
-│   │   ├── journal.py          # Journal analysis endpoints
-│   │   └── tasks.py            # Cognitive task endpoints
-│   ├── nlp/                    # NLP pipeline
-│   │   ├── bert_cnn.py         # BERT-CNN model definition
-│   │   ├── sentiment.py        # Sentiment analysis
-│   │   ├── distortion.py       # Cognitive distortion detection
-│   │   └── classifier.py       # Mental health classification
-│   ├── adaptive/               # Adaptive recommendation engine
-│   │   └── task_selector.py    # Algorithm 1 implementation
-│   ├── requirements.txt
-│   └── .env.example
-│
 ├── README.md
-└── .gitattributes
-```  -->
-
-<!-- --- -->
+├── .gitattributes
+│
+├── cognify/                    # Next.js frontend application (TypeScript + React)
+│   ├── app/                    # Next.js App Router
+│   │   ├── api/                # Route handlers (API endpoints)
+│   │   │   ├── auth/           # Authentication endpoints (google, signin, signup)
+│   │   │   ├── chat/           # Chat endpoint
+│   │   │   ├── game/           # Game endpoints (nback)
+│   │   │   ├── journal/        # Journal endpoints
+│   │   │   ├── journal-db/     # Journal database endpoint
+│   │   │   ├── journal-summarizer/  # Journal summarizer endpoint
+│   │   │   ├── profile/        # User profile endpoint
+│   │   │   ├── questionnaire/  # Questionnaire endpoint
+│   │   │   └── task/           # Task endpoints (stroop)
+│   │   ├── auth/               # Auth pages
+│   │   │   ├── login/          # Login page
+│   │   │   └── signup/         # Signup page
+│   │   ├── callback/           # Auth callback route
+│   │   ├── components/         # Page-specific components
+│   │   │   ├── AuthProvider.tsx
+│   │   │   ├── ChatAssistant.tsx
+│   │   │   ├── FloatingPlayer.tsx
+│   │   │   ├── HostilicProgresChart.tsx
+│   │   │   ├── Mindfulness.tsx
+│   │   │   └── screeningData.ts
+│   │   ├── onboarding/         # Onboarding flow
+│   │   │   ├── assessment/     # Assessment page
+│   │   │   ├── dashboard/      # Dashboard pages
+│   │   │   │   ├── flanker/    # Flanker task page
+│   │   │   │   ├── nback/      # N-back task page
+│   │   │   │   └── stroop/     # Stroop task page
+│   │   │   ├── info/           # Info page
+│   │   │   ├── profiling/      # Profiling page
+│   │   │   └── screening/      # Screening page
+│   │   ├── layout.tsx          # Root layout
+│   │   ├── page.tsx            # Home page
+│   │   ├── globals.css         # Global styles
+│   │   └── favicon.ico
+│   │
+│   ├── components/             # Reusable UI components
+│   │   └── ui/
+│   │       └── button.tsx
+│   │
+│   ├── lib/                    # Utility functions & configurations
+│   │   ├── gameStatus.ts
+│   │   ├── nextAuthOptions.ts
+│   │   ├── progress.ts
+│   │   ├── supabaseClient.ts
+│   │   └── utils.ts
+│   │
+│   ├── public/                 # Static assets
+│   │   ├── intro/              # Audio files (Welcome.mp3, mindfulness audio)
+│   │   └── images/             # SVGs and images
+│   │
+│   ├── middleware.ts           # Next.js middleware
+│   ├── next.config.ts          # Next.js configuration
+│   ├── tsconfig.json           # TypeScript configuration
+│   ├── package.json            # Frontend dependencies
+│   ├── package-lock.json
+│   ├── tailwind.config.ts      # Tailwind CSS config (via postcss.config.mjs)
+│   ├── postcss.config.mjs      # PostCSS configuration
+│   ├── eslint.config.mjs       # ESLint configuration
+│   ├── components.json         # Shadcn/UI components manifest
+│   ├── next-env.d.ts           # Next.js type definitions
+│   ├── .env                    # Environment variables (local)
+│   ├── .env.example            # Example env file
+│   ├── .env.local              # Local overrides
+│   ├── .gitignore
+│   └── README.md
+│
+└── backend/                    # Python FastAPI backend
+    ├── app.py                  # FastAPI application entry point
+    ├── BERT_CNN.py             # BERT-CNN model implementation
+    ├── BERT_CNN_multi.py       # BERT-CNN multi-task variant
+    ├── inference_module.py     # Model inference module
+    ├── preprocess_multi.py     # Multi-task preprocessing
+    ├── bert_cnn_best_mh.pt     # Pre-trained model weights
+    ├── requirements.txt        # Python dependencies
+    └── __pycache__/            # Python cache
+```
 
 ## Setup & Installation
 
@@ -217,7 +270,7 @@ npm install
 
 ```bash
 cp .env.example .env.local
-# Edit .env.local with your backend API URL
+# Edit .env.local with your backend API URL and Supabase credentials
 ```
 
 5. **Run the development server**
@@ -242,7 +295,7 @@ npm start
 1. **Navigate to the backend directory**
 
 ```bash
-cd Backend
+cd backend
 ```
 
 2. **Create and activate a virtual environment**
@@ -271,20 +324,29 @@ cp .env.example .env
 # Edit .env with your configuration
 ```
 
-5. **Download pre-trained models** *(if not bundled)*
+5. **Ensure model weights are available**
 
-```bash
-python -c "from transformers import AutoTokenizer, AutoModel; AutoTokenizer.from_pretrained('bert-base-uncased'); AutoModel.from_pretrained('bert-base-uncased')"
-```
+The pre-trained BERT-CNN model (`bert_cnn_best_mh.pt`) should be in the backend directory. If not included, the model will be downloaded on first inference.
 
 6. **Run the backend server**
 
 ```bash
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+uvicorn app:app --reload --host 0.0.0.0 --port 8000
 ```
 
 The API will be available at `http://localhost:8000`  
 Interactive API docs: `http://localhost:8000/docs`
+
+---
+
+## Backend Features
+
+The backend includes:
+- **BERT-CNN Multi-task Model** (`BERT_CNN_multi.py`, `BERT_CNN.py`) — Hybrid architecture for mental health classification
+- **Inference Module** (`inference_module.py`) — Real-time predictions on journal entries
+- **Preprocessing** (`preprocess_multi.py`) — Multi-task data preprocessing
+- **Pre-trained Weights** (`bert_cnn_best_mh.pt`) — Best-performing model checkpoint
+- **Multi-task Learning** — Simultaneous sentiment analysis, emotion classification, cognitive distortion detection, and mental health classification
 
 ---
 
@@ -293,6 +355,19 @@ Interactive API docs: `http://localhost:8000/docs`
 ### Frontend (`cognify/.env.local`)
 
 ```env
+# NextAuth.js Configuration
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-nextauth-secret-here
+
+# Google OAuth (for authentication)
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+
+# API Configuration
 NEXT_PUBLIC_API_URL=http://localhost:8000
 NEXT_PUBLIC_APP_NAME=Cognify
 ```
@@ -310,11 +385,14 @@ DATABASE_URL=sqlite:///./cognify.db
 # For PostgreSQL: DATABASE_URL=postgresql://user:password@localhost/cognify
 
 # ML Models
-MODEL_PATH=./models/bert_cnn_checkpoint.pt
-HF_MODEL_NAME=bert-base-uncased
+MODEL_PATH=./bert_cnn_best_mh.pt
 
 # CORS
 ALLOWED_ORIGINS=http://localhost:3000
+
+# LLM Configuration (Ollama)
+OLLAMA_MODEL=gemma3:1b
+OLLAMA_HOST=http://localhost:11434
 ```
 
 ---
