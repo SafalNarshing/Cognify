@@ -16,7 +16,7 @@
 
 <br/>
 
-<img src="https://github.com/SafalNarshing/Cognify/blob/eaf97b86283082c9ee2988e6ba5659972f22f2e5/cognify/public/landing.png" alt="Cognify logo" width="420"/>
+<img src="https://github.com/SafalNarshing/Cognify/blob/6a0bde4bbd5cc6e510f51db0ca245a359a2ec30a/cognify/public/landing.png" alt="Cognify logo" width="600"/>
 
 </div>
 
@@ -29,12 +29,10 @@
 - [Features](#-features)
 - [Cognitive Tasks](#-cognitive-tasks)
 - [NLP Model](#-nlp-model)
-- [What's Not (Yet) Built](#-whats-not-yet-built)
 - [Tech Stack](#-tech-stack)
 - [Project Structure](#-project-structure)
 - [Getting Started](#-getting-started)
 - [Ethical Considerations](#-ethical-considerations)
-- [Citation](#-citation)
 - [License](#-license)
 
 ---
@@ -203,8 +201,6 @@ Runs at `http://localhost:8000` (interactive docs at `/docs`). Point the fronten
 - Cognify is a **supplementary tool**, not a replacement for professional mental health care.
 - Journal entries and screening answers are sensitive data — treat any deployment's Supabase project and environment secrets accordingly.
 - The screening flow uses simplified, non-clinical question sets inspired by (but not identical to) PHQ-9, GAD-7, and ASRS — do not present scores from this app as clinical diagnoses.
-
-
 
 ---
 
